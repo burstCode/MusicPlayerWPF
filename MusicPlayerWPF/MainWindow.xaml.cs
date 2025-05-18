@@ -9,20 +9,35 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace MusicPlayerWPF
+using MusicPlayerWPF.Models;
+
+namespace MusicPlayerWPF;
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml
+/// </summary>
+public partial class MainWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    //private readonly string _imagePath;
+    //_imagePath = "Resources\\default-music-image.png";
+    //List<Track> tracks = new List<Track>
+    //{
+    //    new Track
+    //    {
+    //        Id = 1,
+    //        Title = "Заголовок",
+    //        Description = "Описание",
+    //        Author = "Автор",
+    //    },
+
+    //};
+
+    public MainWindow()
     {
-        //private readonly string _imagePath;
-        //_imagePath = "Resources\\default-music-image.png";
+        InitializeComponent();
 
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
-
+        
+        tracksList.ItemsSource = new string[]{ "Заголовок 1", "Заголовок 2" };
     }
+
 }

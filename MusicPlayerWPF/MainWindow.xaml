@@ -7,14 +7,20 @@
         mc:Ignorable="d"
         Title="MainWindow" 
         Height="600" Width="800"
-        MinHeight="448" MinWidth="512">
+        MinHeight="448" MinWidth="512"
+        FontFamily="Consolas"
+        WindowStartupLocation="CenterScreen">
 
     <Grid>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" MinWidth="128" />
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="3*" MinWidth="384" />
         </Grid.ColumnDefinitions>
+
+        <!-- Список треков -->
+        <ListBox x:Name="tracksList" Grid.Column="0" />
 
         <GridSplitter Grid.Column="1"
                       HorizontalAlignment="Center"
@@ -23,28 +29,58 @@
                       Background="Gray"
                       Width="3" />
 
+        <!-- Просмотр текущего трека -->
         <StackPanel Grid.Column="2" Grid.Row="1"
                     Orientation="Vertical"
                     VerticalAlignment="Center"
                     Margin="0, 0, 0, 80">
 
+            <!-- Обложка трека -->
             <Border Height="256" Width="256" CornerRadius="15">
                 <Border.Background>
-                    <ImageBrush Stretch="Uniform"
-                                ImageSource="Resources/default-music-image.png" />
+                    <ImageBrush ImageSource="Resources/default-music-image.png"
+                                Stretch="Uniform" />
                 </Border.Background>
             </Border>
 
+            <!-- Тайминги -->
             <StackPanel Orientation="Horizontal" 
                         HorizontalAlignment="Center">
                 
-                <Label Content="00:00" Margin="0, 0, 80, 0" />
-                <Label Content="00:00" Margin="100, 0, 0, 0" />
+                <Label Content="00:00"
+                       Margin="0, 0, 80, 0" />
+                <Label Content="00:00"
+                       Margin="80, 0, 0, 0" />
             </StackPanel>
 
-            <Slider x:Name="prog" Width="256"
+            <!-- Метаданные -->
+            <Label Content="Имя трека" 
+                   HorizontalAlignment="Center"
+                   FontSize="18" />
+            <Label Content="Автор трека" 
+                   HorizontalAlignment="Center"
+                   FontSize="14" />
+
+            <!-- Ползунок для перелистывания -->
+            <Slider Width="256"
                     TickPlacement="BottomRight" />
 
+
+            <!-- Кнопки управления -->
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0, 25, 0, 0">
+                
+                <Button Width="50" Height="50" 
+                        Margin="25, 0, 0, 0" />
+                <Button Width="50" Height="50" 
+                        Margin="25, 0, 25, 0" />
+                <Button Width="50" Height="50" 
+                        Margin="0, 0, 25, 0" />
+            </StackPanel>
+            
         </StackPanel>
+
     </Grid>
+    
 </Window>

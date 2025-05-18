@@ -1,13 +1,12 @@
 ﻿using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace MusicPlayerWPF
+namespace MusicPlayerWPF;
+
+public static class GradientMaker
 {
-    public static class GradientMaker
+    public static LinearGradientBrush GetGradientFromImage(string imagePath)
     {
-        public static LinearGradientBrush GetGradientFromImage(string imagePath)
-        {
-            return new();
-        }
+        return new();
     }
 }
