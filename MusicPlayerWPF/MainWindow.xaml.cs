@@ -32,6 +32,15 @@ public partial class MainWindow : Window
 
     //};
 
+    /*
+     * Пауза - &#xE769;
+     * Играть - &#xE768;
+     * 
+     * Не повторять - F5E7;
+     * Повторять трек - &#xE8ED;
+     * Повторять все - &#xE8EE;
+     */
+
     public MainWindow()
     {
         InitializeComponent();
