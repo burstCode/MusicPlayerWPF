@@ -14,6 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="taglib-sharp-netstandard2.0" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="default-music-image.png" />
     <Resource Include="Resources\default-music-image.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>

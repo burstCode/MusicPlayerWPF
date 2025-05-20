@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicPlayerWPF"
+        xmlns:models="clr-namespace:MusicPlayerWPF.Models"
         mc:Ignorable="d"
         Title="MainWindow" 
         Height="600" Width="800"
@@ -12,7 +13,7 @@
         WindowStartupLocation="CenterScreen">
 
     <Grid>
-        
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" MinWidth="128" />
             <ColumnDefinition Width="Auto" />
@@ -20,7 +21,8 @@
         </Grid.ColumnDefinitions>
 
         <!-- Список треков -->
-        <ListBox x:Name="tracksList" Grid.Column="0" />
+        <ListBox x:Name="UITracksList" Grid.Column="0"
+                 SelectionChanged="UITracksList_SelectionChanged" />
 
         <GridSplitter Grid.Column="1"
                       HorizontalAlignment="Center"
@@ -49,15 +51,18 @@
                 
                 <Label Content="00:00"
                        Margin="0, 0, 80, 0" />
-                <Label Content="00:00"
+                <Label DataContext="{Binding CurrentTrack}"
+                       Content="{Binding Duration}"
                        Margin="80, 0, 0, 0" />
             </StackPanel>
 
             <!-- Метаданные -->
-            <Label Content="Имя трека" 
+            <Label DataContext="{Binding CurrentTrack}"
+                   Content="{Binding Title}" 
                    HorizontalAlignment="Center"
                    FontSize="18" />
-            <Label Content="Автор трека" 
+            <Label DataContext="{Binding CurrentTrack}"
+                   Content="{Binding Author}"
                    HorizontalAlignment="Center"
                    FontSize="14" />
 
@@ -73,13 +78,16 @@
 
                 <Button Content="&#xE76B;"
                         Margin="25, 0, 0, 0"
-                        Style="{StaticResource ControlButton}" />
+                        Style="{StaticResource ControlButton}"
+                        Click="ButtonPressed_Click" />
                 <Button Content="&#xE768;"
                         Margin="25, 0, 25, 0"
-                        Style="{StaticResource ControlButton}" />
+                        Style="{StaticResource ControlButton}"
+                        Click="ButtonPressed_Click" />
                 <Button Content="&#xE76C;"
                         Margin="0, 0, 25, 0"
-                        Style="{StaticResource ControlButton}" />
+                        Style="{StaticResource ControlButton}"
+                        Click="ButtonPressed_Click" />
             </StackPanel>
             
         </StackPanel>
