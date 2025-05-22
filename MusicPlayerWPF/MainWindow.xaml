@@ -50,7 +50,7 @@
                         HorizontalAlignment="Center">
                 
                 <Label DataContext="{Binding CurrentTrack}"
-                       Content="{Binding Clock}"
+                       Content="{Binding Position}"
                        Margin="0, 0, 80, 0" />
                 <Label DataContext="{Binding CurrentTrack}"
                        Content="{Binding Duration}"
@@ -68,8 +68,15 @@
                    FontSize="14" />
 
             <!-- Ползунок для перелистывания -->
-            <Slider Width="256"
-                    TickPlacement="BottomRight" />
+            <Slider DataContext="{Binding CurrentTrack}"
+                    Width="256" 
+                    TickPlacement="Both"
+                    Minimum="0"
+                    Maximum="{Binding DurationInSeconds}" 
+                    Value="{Binding PositionInSeconds, Mode=TwoWay}"
+                    PreviewMouseLeftButtonDown="Slider_PreviewMouseLeftButtonDown"
+                    PreviewMouseLeftButtonUp="Slider_PreviewMouseLeftButtonUp"
+                    ValueChanged="Slider_ValueChanged"/>
 
 
             <!-- Кнопки управления -->

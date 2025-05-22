@@ -15,8 +15,10 @@ public class Track : INotifyPropertyChanged
         Description = "Описание трека";
         Author = "Автор трека";
         Album = Image.FromFile("Resources/default-music-image.png");
-        Clock = "00:00";
+        Position = "00:00";
+        PositionInSeconds = 0;
         Duration = "00:00";
+        DurationInSeconds = 0;
     }
 
     private int _id;
@@ -24,8 +26,10 @@ public class Track : INotifyPropertyChanged
     private string _description;
     private string _author;
     private Image _album;
-    private string _clock;
+    private string _position;
+    private double _positionInSeconds;
     private string _duration;
+    private double _durationInSeconds;
 
     public int Id
     {
@@ -77,13 +81,27 @@ public class Track : INotifyPropertyChanged
         }
     }
 
-    public string Clock
+    public string Position
     {
-        get { return _clock; }
+        get { return _position; }
         set
         {
-            _clock = value;
-            OnPropertyChanged("Clock");
+            _position = value;
+            OnPropertyChanged("Position");
+        }
+    }
+
+    public double PositionInSeconds
+    {
+        get { return _positionInSeconds; }
+        set
+        {
+            if (Math.Abs(_positionInSeconds - value) > 0.1)
+            {
+                _positionInSeconds = value;
+                OnPropertyChanged(nameof(PositionInSeconds));
+            }
+            OnPropertyChanged("PositionInSeconds");
         }
     }
 
@@ -94,6 +112,20 @@ public class Track : INotifyPropertyChanged
         {
             _duration = value;
             OnPropertyChanged("Duration");
+        }
+    }
+
+    public double DurationInSeconds
+    {
+        get { return _durationInSeconds; }
+        set
+        {
+            if (Math.Abs(_durationInSeconds - value) > 0.1)
+            {
+                _durationInSeconds = value;
+                OnPropertyChanged(nameof(Duration));
+            }
+            OnPropertyChanged("DurationInSeconds");
         }
     }
 

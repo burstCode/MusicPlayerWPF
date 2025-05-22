@@ -59,7 +59,7 @@ public static class MusicLoader
             if (!string.IsNullOrEmpty(tagFile.Tag.Title))
                 track.Title = tagFile.Tag.Title;
             else
-                Path.GetFileNameWithoutExtension(filename);
+                track.Title = Path.GetFileNameWithoutExtension(filename);
 
             // Описание
             if (!string.IsNullOrEmpty(tagFile.Tag.Comment))
