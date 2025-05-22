@@ -1,7 +1,9 @@
-﻿using System.IO;
+﻿using System.ComponentModel;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
 using MusicPlayerWPF.Models;
 
 namespace MusicPlayerWPF;
@@ -9,7 +11,7 @@ namespace MusicPlayerWPF;
 /// <summary>
 /// Interaction logic for MainWindow.xaml
 /// </summary>
-public partial class MainWindow : Window
+public partial class MainWindow : Window, INotifyPropertyChanged
 {
     //private readonly string _imagePath;
     //_imagePath = "Resources\\default-music-image.png";
@@ -23,6 +25,12 @@ public partial class MainWindow : Window
      * Повторять все - &#xE8EE;
      */
 
+    enum PlayerState
+    {
+        AtPause = 0,
+        Playing = 1
+    }
+
     const string PLAY_BUTTON_SYMBOL = "\uE768";
     const string PAUSE_BUTTON_SYMBOL = "\uE769";
     const string PREVIOUS_BUTTON_SYMBOL = "\uE76B";
@@ -32,11 +40,26 @@ public partial class MainWindow : Window
         Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
 
     private MediaPlayer mediaPlayer = new();
+    private DispatcherTimer _timer = new();
 
     private readonly List<string> _musicList;
+    private string _playButtonCurrentSymbol = PLAY_BUTTON_SYMBOL;
 
     public Track CurrentTrack { get; set; } = new();
-    
+
+    private PlayerState _playerState = PlayerState.AtPause;
+
+    public string PlayButtonCurrentSymbol
+    {
+        get => _playButtonCurrentSymbol;
+        set
+        {
+            _playButtonCurrentSymbol = value;
+            OnPropertyChanged("PlayButtonCurrentSymbol");
+        }
+    }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     public MainWindow()
     {
@@ -49,6 +72,10 @@ public partial class MainWindow : Window
 
         // Установка списка имен треков в качестве источника данных для бокового списка
         UITracksList.ItemsSource = _musicList;
+
+        // Настройка таймера
+        _timer.Interval = TimeSpan.FromSeconds(1);
+        _timer.Tick += Timer_Tick;
     }
 
     private void ButtonPressed_Click(object sender, RoutedEventArgs e)
@@ -73,6 +100,8 @@ public partial class MainWindow : Window
 
     private void PlayMusic()
     {
+        if ( _playerState == PlayerState.Playing ) { return; }
+
         // Получение индекса текущего выбранного трека в списке слева
         int selectedTrackIndex = UITracksList.SelectedIndex;
         
@@ -83,13 +112,21 @@ public partial class MainWindow : Window
         string selectedTrackName = _musicList[ selectedTrackIndex ];
 
         // Составление полного пути к треку в пользовательской папке "Музыка"
-        var currentTrackUri = new Uri( Path.Combine(PATH_TO_MUSIC_FOLDER, selectedTrackName) );
+        var currentTrackPath = Path.Combine(PATH_TO_MUSIC_FOLDER, selectedTrackName);
 
-        if ( mediaPlayer.Source == currentTrackUri ) { return; }
+        if ( mediaPlayer.Source == new Uri(currentTrackPath) ) { return; }
         if ( mediaPlayer.Source != null ) { mediaPlayer.Close(); }
         
-        mediaPlayer.Open(currentTrackUri);
+        mediaPlayer.Open( new Uri(currentTrackPath) );
+
+        // Получаем все метаданные трека
+        CurrentTrack.Equals( MusicLoader.GetTrackMetadata(currentTrackPath) );
+
         mediaPlayer.Play();
+        _timer.Start();
+
+        _playerState = PlayerState.Playing;
+        PlayButtonCurrentSymbol = PAUSE_BUTTON_SYMBOL;
     }
 
     private void PauseMusic()
@@ -104,6 +141,14 @@ public partial class MainWindow : Window
     {
     }
 
+    private void Timer_Tick(object? sender, EventArgs e)
+    {
+        if (mediaPlayer.Source != null) 
+        {
+            CurrentTrack.Clock = mediaPlayer.Position.ToString("mm\\:ss");
+        }
+    }
+
     private void UITracksList_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         int selectedTrackIndex = (sender as ListBox).SelectedIndex;
@@ -111,8 +156,9 @@ public partial class MainWindow : Window
 
         if ( selectedTrackName == null ) { return; };
 
-        CurrentTrack.Title = selectedTrackName;
-
         PlayMusic();
     }
+
+    protected void OnPropertyChanged(string propertyName) =>
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }

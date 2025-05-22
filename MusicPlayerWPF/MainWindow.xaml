@@ -49,7 +49,8 @@
             <StackPanel Orientation="Horizontal" 
                         HorizontalAlignment="Center">
                 
-                <Label Content="00:00"
+                <Label DataContext="{Binding CurrentTrack}"
+                       Content="{Binding Clock}"
                        Margin="0, 0, 80, 0" />
                 <Label DataContext="{Binding CurrentTrack}"
                        Content="{Binding Duration}"
@@ -80,7 +81,7 @@
                         Margin="25, 0, 0, 0"
                         Style="{StaticResource ControlButton}"
                         Click="ButtonPressed_Click" />
-                <Button Content="&#xE768;"
+                <Button Content="{Binding PlayButtonCurrentSymbol}"
                         Margin="25, 0, 25, 0"
                         Style="{StaticResource ControlButton}"
                         Click="ButtonPressed_Click" />

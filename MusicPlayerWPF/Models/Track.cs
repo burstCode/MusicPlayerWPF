@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
+using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace MusicPlayerWPF.Models;
 
@@ -12,16 +14,18 @@ public class Track : INotifyPropertyChanged
         Title = "Имя трека";
         Description = "Описание трека";
         Author = "Автор трека";
-        Album = "";
-        Duration = new( new TimeSpan(0, 0, 0) );
+        Album = Image.FromFile("Resources/default-music-image.png");
+        Clock = "00:00";
+        Duration = "00:00";
     }
 
     private int _id;
     private string _title;
     private string _description;
     private string _author;
-    private string _album;
-    private Duration _duration;
+    private Image _album;
+    private string _clock;
+    private string _duration;
 
     public int Id
     {
@@ -63,7 +67,7 @@ public class Track : INotifyPropertyChanged
         }
     }
 
-    public string Album
+    public Image Album
     {
         get { return _album; }
         set
@@ -73,7 +77,17 @@ public class Track : INotifyPropertyChanged
         }
     }
 
-    public Duration Duration
+    public string Clock
+    {
+        get { return _clock; }
+        set
+        {
+            _clock = value;
+            OnPropertyChanged("Clock");
+        }
+    }
+
+    public string Duration
     {
         get { return _duration; }
         set
@@ -88,5 +102,14 @@ public class Track : INotifyPropertyChanged
     {
         if (PropertyChanged != null)
             PropertyChanged(this, new PropertyChangedEventArgs(prop));
+    }
+
+    public void Equals(Track other)
+    {
+        Title = other.Title;
+        Description = other.Description;
+        Author = other.Author;
+        Album = other.Album;
+        Duration = other.Duration;
     }
 }

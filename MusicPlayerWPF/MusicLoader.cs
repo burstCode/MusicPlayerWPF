@@ -1,6 +1,6 @@
 ﻿using MusicPlayerWPF.Models;
+using System.Drawing;
 using System.IO;
-using TagLib;
 
 namespace MusicPlayerWPF;
 
@@ -57,25 +57,33 @@ public static class MusicLoader
 
             // Название трека
             if (!string.IsNullOrEmpty(tagFile.Tag.Title))
-            { track.Title = tagFile.Tag.Title; }
-            else { Path.GetFileNameWithoutExtension(filename); }
+                track.Title = tagFile.Tag.Title;
+            else
+                Path.GetFileNameWithoutExtension(filename);
 
             // Описание
             if (!string.IsNullOrEmpty(tagFile.Tag.Comment))
-            { track.Description = tagFile.Tag.Comment; }
-            else { track.Description = string.Empty; }
+                track.Description = tagFile.Tag.Comment;
+            else
+                track.Description = "Описание отсутствует";
 
             // Исполнитель
             if (tagFile.Tag.Performers.Any())
-            { track.Author = tagFile.Tag.FirstPerformer; }
-            else { track.Author = "Неизвестен"; }
+                track.Author = tagFile.Tag.FirstPerformer;
+            else
+                track.Author = "Неизвестен";
+            
+            // Обложка
+            if (tagFile.Tag.Pictures.Any())
+            {
+                MemoryStream ms = new MemoryStream(tagFile.Tag.Pictures[0].Data.Data);
+                track.Album = Image.FromStream(ms);
+            }
 
-            //if (tagFile.Tag.Pictures.Any())
-            //{ track.Album = tagFile.Tag.Pictures[0]; }
-            //else { возвращать базовое изображение }
-
-
+            track.Duration = tagFile.Properties.Duration.ToString("mm\\:ss");
         }
         catch { }
+
+        return track;
     }
 }
