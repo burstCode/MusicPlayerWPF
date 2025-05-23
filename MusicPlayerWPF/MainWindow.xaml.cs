@@ -146,10 +146,14 @@ public partial class MainWindow : Window, INotifyPropertyChanged
 
     private void PreviousTrack()
     {
+        if (UITracksList.SelectedIndex == 0) UITracksList.SelectedIndex = _musicList.Count - 1;
+        else UITracksList.SelectedIndex--;
     }
 
     private void NextTrack()
     {
+        if (UITracksList.SelectedIndex == _musicList.Count - 1) UITracksList.SelectedIndex = 0;
+        else UITracksList.SelectedIndex++;
     }
 
     private void Timer_Tick(object? sender, EventArgs e)
